@@ -49,6 +49,10 @@ function onClickTSelect(x, y, fsm, variables){
 	}
 }
 
+function onMoveTSelect(x, y, fsm, variables){
+	variables.optionBox.highlight(x, y, variables.ctx);
+}
+
 //begin game functions
 function onEnterBeginGame(from, variables){
 	resetCanvas(variables);
@@ -85,6 +89,7 @@ function Start() {
 			onentertselect: function(from, variables) {onEnterTSelect(from, variables) },
 			onexittselect: function(to, variables) { },
 			onclicktselect: function(x, y, fsm, variables) {onClickTSelect(x, y, fsm, variables); },
+			onmovetselect: function(x, y, fsm, variables) {onMoveTSelect(x, y, fsm, variables); },
 			
 			onenterbegingame: function(from, variables) { onEnterBeginGame(from, variables) },
 			onexittbegingame: function(to, variables) { },

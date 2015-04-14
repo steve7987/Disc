@@ -41,6 +41,8 @@ function OptionBox(optionList, positionInfo){
 	this.dy = positionInfo.dy || 25;
 	this.textAlign = positionInfo.align || "end";
 	this.fillStyle = positionInfo.fillStyle || "#0f0f0f";
+	this.fillStyleHighlight = positionInfo.fillStyle || "#ff0f0f";
+	this.highlighted = -1;
 }
 
 OptionBox.prototype.display = function(ctx){
@@ -62,3 +64,36 @@ OptionBox.prototype.getFromClick = function(x, y){
 	}
 	return offsetY;
 }
+
+OptionBox.prototype.highlight = function(x, y, ctx){
+	var newHL = this.getFromClick(x, y);
+	if (newHL != this.highlighted){
+		//dehighlight old text
+		if (this.highlighted != -1){
+			ctx.fillStyle = this.fillStyle;
+			ctx.textAlign = this.textAlign;
+			ctx.fillText(this.optionList[this.highlighted], this.x, this.y + this.highlighted *this.dy);
+		}
+		//redraw highlighted text
+		if (newHL != -1){
+			ctx.fillStyle = this.fillStyleHighlight;
+			ctx.textAlign = this.textAlign;
+			ctx.fillText(this.optionList[newHL], this.x, this.y + newHL *this.dy);
+		}
+		this.highlighted = newHL;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
