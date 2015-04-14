@@ -26,7 +26,7 @@ function onEnterMenu(from, variables){
 }
 
 function onClickMenu(x, y, fsm, variables){
-	fsm.change("tselect");
+	fsm.change("TSelect");
 }
 
 //team select functions
@@ -45,7 +45,7 @@ function onClickTSelect(x, y, fsm, variables){
 		variables.team = teamList[clickedOn];
 		var opp = Math.floor(teamList.length*Math.random());
 		variables.opponent = teamList[opp];
-		fsm.change("begingame");
+		fsm.change("BeginGame");
 	}
 }
 
@@ -57,47 +57,71 @@ function onMoveTSelect(x, y, fsm, variables){
 function onEnterBeginGame(from, variables){
 	resetCanvas(variables);
 	variables.ctx.fillStyle = "#0f0f0f";
-	variables.ctx.fillText(variables.team + " vs. " + variables.opponent, 100, 100);
+	variables.ctx.textAlign = "center";
+	variables.ctx.fillText(variables.team + " vs. " + variables.opponent, variables.canvas.width / 2, 100);
 	variables.period = 1;  //1 is first half, 2 second half, 3 is universe
 	variables.gScore = 0;
 	variables.bScore = 0;
 }
 
 function onClickBeginGame(x, y, fsm, variables){
-	fsm.change("endgame");
+	fsm.change("Period");
+}
+
+//period functions
+function onEnterPeriod(from, variables){
+	resetCanvas(variables);
+	variables.ctx.fillStyle = "#0f0f0f";
+	variables.ctx.textAlign = "center";
+	variables.ctx.fillText(variables.team + " vs. " + variables.opponent, variables.canvas.width / 2, 100);
+	if (variables.period == 1){
+		variables.ctx.fillText("First Half", variables.canvas.width / 2, 125);
+	}
+	else if (variables.period == 2){
+		variables.ctx.fillText("Second Half", variables.canvas.width / 2, 125);
+	}
+	else {
+		variables.ctx.fillText("Universe Point", variables.canvas.width / 2, 125);
+	}
+	variables.ctx.fillText(variables.gScore + " to " + variables.bScore, variables.canvas.width / 2, 150);
+	
+	variables.yards = 15;
+}
+
+function onClickPeriod(x, y, fsm, variables){
+	fsm.change("EndGame");
 }
 
 //end game functions
 function onEnterEndGame(from, variables){
 	resetCanvas(variables);
 	variables.ctx.fillStyle = "#0f0f0f";
-	variables.ctx.fillText(variables.team + " wins", 100, 100);
+	variables.ctx.fillText(variables.team + " wins", variables.canvas.width / 2, 100);
 }
 
 function onClickEndGame(x, y, fsm, variables){
-	fsm.change("menu");
+	fsm.change("Menu");
 }
 
 function Start() {
 	var config = {
-		initial: 'menu',
+		initial: 'Menu',
 		callbacks: {
-			onentermenu: function(from, variables) {onEnterMenu(from, variables)},
-			onexitmenu: function(to, variables) { },
-			onclickmenu: function(x, y, fsm, variables) {onClickMenu(x, y, fsm, variables); },
+			onenterMenu: function(from, variables) {onEnterMenu(from, variables)},
+			onclickMenu: function(x, y, fsm, variables) {onClickMenu(x, y, fsm, variables); },
 			
-			onentertselect: function(from, variables) {onEnterTSelect(from, variables) },
-			onexittselect: function(to, variables) { },
-			onclicktselect: function(x, y, fsm, variables) {onClickTSelect(x, y, fsm, variables); },
-			onmovetselect: function(x, y, fsm, variables) {onMoveTSelect(x, y, fsm, variables); },
+			onenterTSelect: function(from, variables) {onEnterTSelect(from, variables) },
+			onclickTSelect: function(x, y, fsm, variables) {onClickTSelect(x, y, fsm, variables); },
+			onmoveTSelect: function(x, y, fsm, variables) {onMoveTSelect(x, y, fsm, variables); },
 			
-			onenterbegingame: function(from, variables) { onEnterBeginGame(from, variables) },
-			onexittbegingame: function(to, variables) { },
-			onclickbegingame: function(x, y, fsm, variables) { onClickBeginGame(x, y, fsm, variables) },
+			onenterBeginGame: function(from, variables) { onEnterBeginGame(from, variables) },
+			onclickBeginGame: function(x, y, fsm, variables) { onClickBeginGame(x, y, fsm, variables) },
 			
-			onenterendgame: function(from, variables) { onEnterEndGame(from, variables) },
-			onexitendgame: function(to, variables) { },
-			onclickendgame: function(x, y, fsm, variables) { onClickEndGame(x, y, fsm, variables) }
+			onenterPeriod: function(from, variables) { onEnterPeriod(from, variables) },
+			onclickPeriod: function(x, y, fsm, variables) { onClickPeriod(x, y, fsm, variables) },
+			
+			onenterEndGame: function(from, variables) { onEnterEndGame(from, variables) },
+			onclickEndGame: function(x, y, fsm, variables) { onClickEndGame(x, y, fsm, variables) }
 		},
 		variables: {
 			canvas: document.getElementById("myCanvas"),
