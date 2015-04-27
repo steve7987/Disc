@@ -86,7 +86,7 @@ function onEnterPeriod(from, variables){
 	variables.ctx.fillText(variables.gScore + " to " + variables.bScore, variables.canvas.width / 2, 150);
 	
 	variables.yards = 15;
-	variables.player = "Steve";  //current player with the disc
+	variables.player = Math.floor(playerList.length*Math.random());
 }
 
 function onClickPeriod(x, y, fsm, variables){
@@ -98,8 +98,8 @@ function onEnterReady(from, variables){
 	resetCanvas(variables);
 	variables.ctx.fillStyle = "#0f0f0f";
 	variables.ctx.textAlign = "center";
-	variables.ctx.fillText(variables.player + " has the disc.", variables.canvas.width / 2, 100);
-	variables.optionBox = new OptionBox(actionList, {x: 100, y: 400, align: "left"});
+	variables.ctx.fillText(playerList[variables.player].name + " has the disc.", variables.canvas.width / 2, 100);
+	variables.optionBox = new OptionBox(playerList[variables.player].options, {x: 100, y: 400, align: "left"});
 	variables.optionBox.display(variables.ctx);
 }
 
@@ -120,8 +120,8 @@ function onEnterAction(from, variables){
 	resetCanvas(variables);
 	variables.ctx.fillStyle = "#0f0f0f";
 	variables.ctx.textAlign = "center";
-	variables.ctx.fillText(variables.player + " uses " + actionList[variables.action], variables.canvas.width / 2, 100);
-	if (Math.random() > 0.4){
+	variables.ctx.fillText(playerList[variables.player].name + " uses " + playerList[variables.player].options[variables.action], variables.canvas.width / 2, 100);
+	if (Math.random() < playerList[variables.player].chance[variables.action]){
 		variables.ctx.fillText("Its super effective", variables.canvas.width / 2, 500);
 		variables.yards += 50;
 		variables.success = true;
